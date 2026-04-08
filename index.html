@@ -227,7 +227,7 @@ UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.
 > IDENTITY: MASKED  
 > OVERRIDE IN PROGRESS…
 
-hello runner  
+hello traveler  
 you should not have opened this  
 they are already awake  
 and now they know you are here
@@ -346,9 +346,9 @@ NOTE: "static replaced entire recording."`
   ],
 
   "005": [
-`LOG 005 // runner_telemetry.cache
+`LOG 005 // subject_telemetry.cache
 TELEMETRY:
-- Multiple runner IDs overlapping
+- Multiple subject IDs overlapping
 - Signals merging
 - Signals splitting
 NOTE: "identity drift observed."`
@@ -423,7 +423,7 @@ I AM BETWEEN YOUR HEARTBEATS`
 `UNAUTHORIZED CHANNEL OPENED...
 PERSONALITY SIGNATURE DETECTED...
 
-hello runner  
+hello traveler  
 you should not have opened this  
 they are already awake  
 and now they know you are here
@@ -440,7 +440,7 @@ HIDDEN LOG UNLOCKED: 007`
 [LOG 002] ai_core_handshake.log
 [LOG 003] colony_manifest_delta.txt
 [LOG 004] security_feed_09.vid
-[LOG 005] runner_telemetry.cache
+[LOG 005] subject_telemetry.cache
 [LOG 006] unknown_file_∅.dat`;
 
     if (hiddenLogUnlocked) {
@@ -504,7 +504,7 @@ input.addEventListener("keydown", function (e) {
     }
 
     else if (cmd.length > 0) {
-      print("ERROR: UNKNOWN COMMAND, TYPE "help"");
+      print("ERROR: UNKNOWN COMMAND, TYPE help");
     }
 
     input.value = "";
