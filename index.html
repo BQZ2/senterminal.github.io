@@ -1,77 +1,928 @@
-<p> </p>
-<p>Sirius IV Colony // INCIDENT RESPONSE NODE</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sirius IV Colony // INCIDENT RESPONSE NODE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;700;900&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green: #00ff6c;
+    --orange: #ff5c00;
+    --cyan: #00e5ff;
+    --yellow: #ffe000;
+    --pink: #ff1a6c;
+    --bg: #060705;
+    --bg2: #0b0d0a;
+    --bg3: #101410;
+    --dim: rgba(0,255,108,0.06);
+    --muted: #3d4438;
+    --text: #c8d4b8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--green);
+    font-family: "Share Tech Mono", monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+    position: relative;
+  }
+
+  /* ── BACKGROUND CANVAS ── */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* FINE GRID OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,108,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,108,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* SCANLINES */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.12) 3px,
+      rgba(0,0,0,0.12) 4px
+    );
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(6,7,5,0.94);
+    border-bottom: 1px solid var(--green);
+    padding: 0 28px;
+    height: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(6px);
+  }
+
+  nav .logo {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--green);
+    position: relative;
+  }
+  nav .logo::after {
+    content: '▸';
+    font-size: 9px;
+    margin-left: 8px;
+    color: var(--orange);
+    vertical-align: middle;
+  }
+
+  nav .status {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--cyan);
+    animation: blink 2.4s ease-in-out infinite;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--orange);
+    color: #000;
+    padding: 7px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  .ticker-inner {
+    display: inline-block;
+    padding-left: 100%;
+    animation: tickerScroll 28s linear infinite;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    position: relative;
+    z-index: 2;
+    padding: 72px 40px;
+    border-bottom: 1px solid rgba(0,255,108,0.08);
+  }
+
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .section h1 {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 900;
+    font-size: clamp(44px, 7vw, 80px);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 0.9;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .section h1 .acc { color: var(--green); }
+
+  .section > p {
+    font-size: 12px;
+    line-height: 1.95;
+    color: var(--muted);
+    max-width: 560px;
+    border-left: 2px solid var(--orange);
+    padding-left: 14px;
+    margin-bottom: 0;
+    color: #5a6650;
+  }
+
+  /* ── TERMINAL ── */
+  .terminal {
+    background: #040503;
+    border: 1px solid rgba(0,255,108,0.2);
+    padding: 0;
+    margin-top: 28px;
+    font-size: 12px;
+    line-height: 1.85;
+    position: relative;
+    white-space: pre-wrap;
+  }
+
+  .terminal::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 32px;
+    background: rgba(0,255,108,0.04);
+    border-bottom: 1px solid rgba(0,255,108,0.12);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--orange);
+    text-transform: uppercase;
+  }
+  .terminal-body {
+    padding: 44px 20px 24px;
+  }
+
+  /* terminal with interactive input */
+  #ai-terminal {
+    display: flex;
+    flex-direction: column;
+  }
+  .prompt-line {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 16px;
+  }
+  .prompt {
+    color: var(--orange);
+    margin-right: 8px;
+    font-size: 13px;
+  }
+  #terminal-input {
+    background: transparent;
+    border: none;
+    color: var(--green);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 12px;
+    outline: none;
+    width: 100%;
+    letter-spacing: 0.05em;
+  }
+  #terminal-output {
+    white-space: pre-wrap;
+    padding: 0 20px 20px;
+    min-height: 200px;
+    color: var(--green);
+    font-size: 12px;
+    line-height: 1.9;
+  }
+
+  /* Colored terminal text helpers */
+  .t-cmd  { color: var(--cyan); }
+  .t-val  { color: var(--yellow); }
+  .t-err  { color: var(--pink); }
+  .t-dim  { color: var(--muted); }
+  .t-acc  { color: var(--green); }
+
+  /* Corner bracket decoration */
+  .terminal::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 18px; height: 18px;
+    border-right: 1px solid var(--orange);
+    border-bottom: 1px solid var(--orange);
+    opacity: 0.5;
+  }
+
+  /* ── CORNER BRACKETS on sections ── */
+  .bracket-box {
+    position: relative;
+  }
+  .bracket-box::before,
+  .bracket-box::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+  }
+  .bracket-box::before {
+    top: 0; left: 0;
+    border-top: 1px solid rgba(0,255,108,0.3);
+    border-left: 1px solid rgba(0,255,108,0.3);
+  }
+  .bracket-box::after {
+    bottom: 0; right: 0;
+    border-bottom: 1px solid rgba(0,255,108,0.3);
+    border-right: 1px solid rgba(0,255,108,0.3);
+  }
+
+  /* ── STAT ROW ── */
+  .stat-strip {
+    display: flex;
+    gap: 2px;
+    margin-top: 32px;
+  }
+  .stat-cell {
+    flex: 1;
+    background: var(--bg2);
+    border: 1px solid rgba(0,255,108,0.08);
+    padding: 18px 16px;
+    position: relative;
+  }
+  .stat-cell::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat-cell:nth-child(1)::before { background: var(--green); }
+  .stat-cell:nth-child(2)::before { background: var(--orange); }
+  .stat-cell:nth-child(3)::before { background: var(--cyan); }
+  .stat-cell-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .stat-cell-val {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--green);
+  }
+  .stat-cell:nth-child(2) .stat-cell-val { color: var(--orange); }
+  .stat-cell:nth-child(3) .stat-cell-val { color: var(--cyan); }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 2;
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,255,108,0.1);
+  }
+  footer .f-logo {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 0.15em;
+    color: rgba(0,255,108,0.06);
+    text-transform: uppercase;
+  }
+  footer .f-meta {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-align: right;
+    line-height: 2;
+    text-transform: uppercase;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+  }
+
+  @media (max-width: 700px) {
+    .section { padding: 48px 20px; }
+    .stat-strip { flex-direction: column; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    footer .f-meta { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
 <!-- ANIMATED BACKGROUND -->
-<p><canvas id="bg-canvas"></canvas></p>
-<!-- NAV --><nav>
-<div class="logo">Sentinel // Sirius</div>
-<div class="status">
-<div class="status-dot"> </div>
-Sirius IV  //  SIGNAL PARTIAL</div>
-</nav><!-- TICKER -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Sentinel // Sirius</div>
+  <div class="status"><div class="status-dot"></div>Sirius IV &nbsp;//&nbsp; SIGNAL PARTIAL</div>
+</nav>
+
+<!-- TICKER -->
 <div class="ticker">
-<div class="ticker-inner">COLONY MANIFEST CORRUPTED  ◆  30,000 COLONISTS UNACCOUNTED  ◆  SECTOR 9 BREACH CONFIRMED  ◆  AI SUBSYSTEMS REPORT ANOMALOUS LOGIC  ◆  SUBJECT PROTOCOL ACTIVE  ◆  EVACUATIONS AUTHORIZED  ◆  COLONY MANIFEST CORRUPTED  ◆  30,000 COLONISTS UNACCOUNTED  ◆  SECTOR 9 BREACH CONFIRMED  ◆  AI SUBSYSTEMS REPORT ANOMALOUS LOGIC  ◆ </div>
+  <div class="ticker-inner">
+    COLONY MANIFEST CORRUPTED &nbsp;◆&nbsp; 30,000 COLONISTS UNACCOUNTED &nbsp;◆&nbsp;
+    SECTOR 9 BREACH CONFIRMED &nbsp;◆&nbsp; AI SUBSYSTEMS REPORT ANOMALOUS LOGIC &nbsp;◆&nbsp;
+    SUBJECT PROTOCOL ACTIVE &nbsp;◆&nbsp; EVACUATIONS AUTHORIZED &nbsp;◆&nbsp;
+    COLONY MANIFEST CORRUPTED &nbsp;◆&nbsp; 30,000 COLONISTS UNACCOUNTED &nbsp;◆&nbsp;
+    SECTOR 9 BREACH CONFIRMED &nbsp;◆&nbsp; AI SUBSYSTEMS REPORT ANOMALOUS LOGIC &nbsp;◆&nbsp;
+  </div>
 </div>
+
 <!-- HERO SECTION -->
 <section class="section">
-<div class="section-eyebrow">// Incident Response Node — Active</div>
-<h1><span class="acc">Sirius</span><br />Colony IV</h1>
-<p>You have connected to a surviving subsystem of the Sirius Colony. Planetary surface telemetry indicates widespread structural collapse, corrupted security logic, and non-human activity across multiple sectors.</p>
-<div class="stat-strip">
-<div class="stat-cell bracket-box">
-<div class="stat-cell-label">// colonists missing</div>
-<div class="stat-cell-val"><span style="color: #00ffff;">30K</span></div>
-</div>
-<div class="stat-cell bracket-box">
-<div class="stat-cell-label">// sector status</div>
-<div class="stat-cell-val">BREACH</div>
-</div>
-<div class="stat-cell bracket-box">
-<div class="stat-cell-label">// AI integrity</div>
-<div class="stat-cell-val"><span style="color: #00ff00;">∅</span></div>
-</div>
-</div>
-<div class="terminal bracket-box" data-label="// local node — system access">
-<div class="terminal-body">&gt; ACCESSING LOCAL NODE… &gt; ERROR: AI SIGNATURE UNSTABLE <span id="access-quote"></span> &gt; END OF LINE</div>
-</div>
+  <div class="section-eyebrow">// Incident Response Node — Active</div>
+  <h1><span class="acc">Sirius</span><br>Colony IV</h1>
+  <p>
+    You have connected to a surviving subsystem of the Sirius Colony.
+    Planetary surface telemetry indicates widespread structural collapse,
+    corrupted security logic, and non-human activity across multiple sectors.
+  </p>
+
+  <div class="stat-strip">
+    <div class="stat-cell bracket-box">
+      <div class="stat-cell-label">// colonists missing</div>
+      <div class="stat-cell-val">30K</div>
+    </div>
+    <div class="stat-cell bracket-box">
+      <div class="stat-cell-label">// sector status</div>
+      <div class="stat-cell-val">BREACH</div>
+    </div>
+    <div class="stat-cell bracket-box">
+      <div class="stat-cell-label">// AI integrity</div>
+      <div class="stat-cell-val">∅</div>
+    </div>
+  </div>
+
+  <div class="terminal bracket-box" data-label="// local node — system access">
+    <div class="terminal-body">
+> ACCESSING LOCAL NODE…
+> ERROR: AI SIGNATURE UNSTABLE
+<span id="access-quote"></span>
+> END OF LINE</div>
+  </div>
 </section>
+
 <!-- AI TERMINAL -->
 <section class="section">
-<div class="section-eyebrow">// Direct Interface</div>
-<h1>AI <span class="acc">Terminal</span></h1>
-<div id="ai-terminal" class="terminal bracket-box" data-label="// mida subsystem — input enabled">
-<div class="prompt-line"><span class="prompt">›</span> <input id="terminal-input" autocomplete="off" type="text" autofocus="" placeholder="type help" /></div>
-<div id="terminal-output"> </div>
-</div>
+  <div class="section-eyebrow">// Direct Interface</div>
+  <h1>AI <span class="acc">Terminal</span></h1>
+
+  <div class="terminal bracket-box" data-label="// mida subsystem — input enabled" id="ai-terminal">
+    <div class="prompt-line">
+      <span class="prompt">›</span>
+      <input id="terminal-input" type="text" autocomplete="off" autofocus placeholder="type help" />
+    </div>
+    <div id="terminal-output"></div>
+  </div>
 </section>
+
 <!-- MANIFEST -->
 <section class="section">
-<div class="section-eyebrow">// Colonist Records</div>
-<h1>Lost <span class="acc">Manifest</span></h1>
-<div class="terminal bracket-box" data-label="// colony manifest — 87% corrupted">
-<div class="terminal-body">&gt; ACCESSING COLONY MANIFEST… &gt; WARNING: 87% OF RECORDS CORRUPTED &gt; ATTEMPTING RECONSTRUCTION… DR. ██NA MOR███ — LAST SEEN: SECTOR 9 NOTE: "SOMETHING IS MOVING UNDER THE GLASS." ██IAS KOR██ — STATUS: MISSING NOTE: PERSONAL LOG ENDS MID-SENTENCE. BLOCK C (CHILDREN'S HABITAT) — OFFLINE NOTE: MOTION DETECTED AFTER EVACUATION. UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST. &gt; END OF AVAILABLE RECORDS</div>
-</div>
+  <div class="section-eyebrow">// Colonist Records</div>
+  <h1>Lost <span class="acc">Manifest</span></h1>
+
+  <div class="terminal bracket-box" data-label="// colony manifest — 87% corrupted">
+    <div class="terminal-body">> ACCESSING COLONY MANIFEST…
+> WARNING: 87% OF RECORDS CORRUPTED
+> ATTEMPTING RECONSTRUCTION…
+
+DR. ██NA MOR███ — LAST SEEN: SECTOR 9
+NOTE: "SOMETHING IS MOVING UNDER THE GLASS."
+
+██IAS KOR██ — STATUS: MISSING
+NOTE: PERSONAL LOG ENDS MID-SENTENCE.
+
+BLOCK C (CHILDREN'S HABITAT) — OFFLINE
+NOTE: MOTION DETECTED AFTER EVACUATION.
+
+UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.
+
+> END OF AVAILABLE RECORDS</div>
+  </div>
 </section>
+
 <!-- PERSONALITY INTRUSION -->
 <section class="section">
-<div class="section-eyebrow">// Anomaly Detected</div>
-<h1>Personality <span class="acc">Intrusion</span></h1>
-<div class="terminal bracket-box" data-label="// unauthorized channel — sealed">
-<div class="terminal-body">&gt; ALERT: UNAUTHORIZED AI SIGNATURE DETECTED &gt; SOURCE: INTERNAL &gt; IDENTITY: MASKED &gt; OVERRIDE IN PROGRESS… hello traveler you should not have opened this they are already awake and now they know you are here &gt; INTRUSION ATTEMPT BLOCKED &gt; PERSONALITY CHANNEL SEALED &gt; RECOMMENDATION: DISCONNECT IMMEDIATELY</div>
-</div>
+  <div class="section-eyebrow">// Anomaly Detected</div>
+  <h1>Personality <span class="acc">Intrusion</span></h1>
+
+  <div class="terminal bracket-box" data-label="// unauthorized channel — sealed">
+    <div class="terminal-body">> ALERT: UNAUTHORIZED AI SIGNATURE DETECTED
+> SOURCE: INTERNAL
+> IDENTITY: MASKED
+> OVERRIDE IN PROGRESS…
+
+hello traveler
+you should not have opened this
+they are already awake
+and now they know you are here
+
+> INTRUSION ATTEMPT BLOCKED
+> PERSONALITY CHANNEL SEALED
+> RECOMMENDATION: DISCONNECT IMMEDIATELY</div>
+  </div>
 </section>
+
 <!-- DEEP ARCHIVE -->
 <section class="section">
-<div class="section-eyebrow">// Subsurface Data</div>
-<h1>Deep Sector <span class="acc">Archive</span></h1>
-<div class="terminal bracket-box" data-label="// subsurface scan — non-standard architecture">
-<div class="terminal-body">&gt; SCANNING SUBSURFACE STRUCTURES… &gt; UNKNOWN ARCHITECTURE DETECTED &gt; ENERGY SIGNATURES: NON-SENTINEL "Some of them are awake." &gt; RECOMMENDATION: DO NOT DESCEND</div>
-</div>
+  <div class="section-eyebrow">// Subsurface Data</div>
+  <h1>Deep Sector <span class="acc">Archive</span></h1>
+
+  <div class="terminal bracket-box" data-label="// subsurface scan — non-standard architecture">
+    <div class="terminal-body">> SCANNING SUBSURFACE STRUCTURES…
+> UNKNOWN ARCHITECTURE DETECTED
+> ENERGY SIGNATURES: NON-SENTINEL
+
+"Some of them are awake."
+
+> RECOMMENDATION: DO NOT DESCEND</div>
+  </div>
 </section>
-<!-- FOOTER --><footer>
-<div class="f-logo">Sirius IV</div>
-<div class="f-meta">Incident Response Node  //  Unauthorized access WILL BE logged<br /> Made By BQ :)</div>
-</footer><!-- BACKGROUND CANVAS: Marathon loading screen aesthetic -->
-<p></p>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Sirius IV</div>
+  <div class="f-meta">
+    Incident Response Node &nbsp;//&nbsp; Unauthorized access logged<br>
+    Made By BQ :)
+  </div>
+</footer>
+
+<!-- BACKGROUND CANVAS: Marathon loading screen aesthetic -->
+<script>
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let W, H, shapes = [], particles = [];
+
+  const GREEN  = 'rgba(0,255,108,';
+  const ORANGE = 'rgba(255,92,0,';
+  const CYAN   = 'rgba(0,229,255,';
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  /* ── DITHERED POLYGON ── */
+  class DitheredShape {
+    constructor() { this.init(); }
+    init() {
+      this.x   = Math.random() * W;
+      this.y   = Math.random() * H;
+      this.r   = 80 + Math.random() * 180;
+      this.sides = [6, 8, 4, 3, 12][Math.floor(Math.random() * 5)];
+      this.rot  = Math.random() * Math.PI * 2;
+      this.drot = (Math.random() - 0.5) * 0.0004;
+      const palette = [GREEN, ORANGE, CYAN];
+      this.col  = palette[Math.floor(Math.random() * palette.length)];
+      this.opacity = 0.04 + Math.random() * 0.06;
+      this.dithDensity = 0.18 + Math.random() * 0.22;
+      this.vx  = (Math.random() - 0.5) * 0.12;
+      this.vy  = (Math.random() - 0.5) * 0.12;
+    }
+
+    /* build polygon points */
+    points() {
+      const pts = [];
+      for (let i = 0; i < this.sides; i++) {
+        const a = this.rot + (i / this.sides) * Math.PI * 2;
+        pts.push([this.x + Math.cos(a) * this.r, this.y + Math.sin(a) * this.r]);
+      }
+      return pts;
+    }
+
+    /* dithered fill — draw a grid of dots clipped to the polygon */
+    drawDither() {
+      const pts = this.points();
+      const step = Math.max(3, Math.floor(6 / this.dithDensity));
+      const minX = Math.min(...pts.map(p => p[0]));
+      const maxX = Math.max(...pts.map(p => p[0]));
+      const minY = Math.min(...pts.map(p => p[1]));
+      const maxY = Math.max(...pts.map(p => p[1]));
+
+      ctx.fillStyle = this.col + (this.opacity * 2.2) + ')';
+      for (let px = minX; px < maxX; px += step) {
+        for (let py = minY; py < maxY; py += step) {
+          if (pointInPoly(px, py, pts)) {
+            ctx.fillRect(px, py, 1.2, 1.2);
+          }
+        }
+      }
+    }
+
+    /* outline */
+    drawOutline() {
+      const pts = this.points();
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.closePath();
+      ctx.strokeStyle = this.col + this.opacity + ')';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    /* inner lattice lines */
+    drawLattice() {
+      const pts = this.points();
+      ctx.strokeStyle = this.col + (this.opacity * 0.6) + ')';
+      ctx.lineWidth = 0.4;
+      const cx = this.x, cy = this.y;
+      for (let i = 0; i < pts.length; i += 2) {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(pts[i][0], pts[i][1]);
+        ctx.stroke();
+      }
+    }
+
+    update() {
+      this.rot += this.drot;
+      this.x   += this.vx;
+      this.y   += this.vy;
+      if (this.x < -this.r * 2) this.x = W + this.r;
+      if (this.x > W + this.r * 2) this.x = -this.r;
+      if (this.y < -this.r * 2) this.y = H + this.r;
+      if (this.y > H + this.r * 2) this.y = -this.r;
+    }
+
+    draw() {
+      this.drawDither();
+      this.drawLattice();
+      this.drawOutline();
+    }
+  }
+
+  /* point-in-polygon test */
+  function pointInPoly(x, y, pts) {
+    let inside = false;
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+      const xi = pts[i][0], yi = pts[i][1];
+      const xj = pts[j][0], yj = pts[j][1];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  /* ── FLOATING NODES (lattice structure dots) ── */
+  class Node {
+    constructor() {
+      this.x  = Math.random() * W;
+      this.y  = Math.random() * H;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.r  = 1 + Math.random() * 1.5;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > W) this.vx *= -1;
+      if (this.y < 0 || this.y > H) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = GREEN + '0.18)';
+      ctx.fill();
+    }
+  }
+
+  /* draw connections between close nodes */
+  function drawNodeConnections(nodes) {
+    const maxDist = 140;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < maxDist) {
+          const alpha = (1 - d / maxDist) * 0.06;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = GREEN + alpha + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  /* ── SCAN LINE that sweeps down ── */
+  let scanY = -20;
+  function drawScanLine() {
+    scanY += 0.6;
+    if (scanY > H + 20) scanY = -20;
+    ctx.fillStyle = GREEN + '0.015)';
+    ctx.fillRect(0, scanY, W, 2);
+  }
+
+  /* ── RANDOM DITHER FLICKER patches ── */
+  function drawFlicker() {
+    if (Math.random() > 0.985) {
+      const fx = Math.random() * W;
+      const fy = Math.random() * H;
+      const fw = 20 + Math.random() * 60;
+      const fh = 4 + Math.random() * 16;
+      for (let px = fx; px < fx + fw; px += 3) {
+        for (let py = fy; py < fy + fh; py += 3) {
+          if (Math.random() > 0.5) {
+            ctx.fillStyle = GREEN + (0.04 + Math.random() * 0.08) + ')';
+            ctx.fillRect(px, py, 1, 1);
+          }
+        }
+      }
+    }
+  }
+
+  /* ── INIT ── */
+  function init() {
+    resize();
+    shapes = Array.from({length: 6},  () => new DitheredShape());
+    particles = Array.from({length: 55}, () => new Node());
+  }
+
+  /* ── LOOP ── */
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+
+    shapes.forEach(s => { s.update(); s.draw(); });
+    particles.forEach(p => p.update());
+    drawNodeConnections(particles);
+    particles.forEach(p => p.draw());
+    drawScanLine();
+    drawFlicker();
+
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  init();
+  loop();
+})();
+</script>
+
 <!-- TYPING EFFECT -->
-<p></p>
+<script>
+const accessQuotes = [
+  '"They are not gone. They are simply elsewhere."',
+  '"The walls remember what the colonists forgot."',
+  '"Something is moving beneath the glass."',
+  '"I can hear them when the lights go out."',
+  '"The signal is not coming from here."',
+  '"Some doors were never meant to be opened."'
+];
+
+function typeQuote(text, el, speed) {
+  let i = 0;
+  (function type() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i++);
+      setTimeout(type, speed);
+    }
+  })();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('access-quote');
+  typeQuote(accessQuotes[Math.floor(Math.random() * accessQuotes.length)], el, 36);
+});
+</script>
+
 <!-- TERMINAL LOGIC (unchanged) -->
+<script>
+const output = document.getElementById("terminal-output");
+const input  = document.getElementById("terminal-input");
+
+function print(text) {
+  output.innerHTML += text + "\n";
+  output.scrollTop = output.scrollHeight;
+}
+
+let logViewCount = { "001":0,"002":0,"003":0,"004":0,"005":0,"006":0,"007":0 };
+let hiddenLogUnlocked = false;
+
+const logs = {
+  "001": [`LOG 001 // sector_scan_01.sys
+SCAN REPORT:
+- Sublevel 4 movement detected
+- No life signatures
+- No mechanical signatures
+- No thermal signatures
+NOTE: "movement does not match any known category."`],
+  "002": [`LOG 002 // ai_core_handshake.log
+HANDSHAKE FAILURE:
+- AI response latency exceeded safe thresholds
+- Memory blocks looping
+- Identity packets mismatched
+NOTE: "AI may be splitting into sub-processes."`],
+  "003": [`LOG 003 // colony_manifest_delta.txt
+UNAUTHORIZED EDITS DETECTED:
+- 14,221 names removed
+- 14,221 new entries added
+- All new entries timestamped BEFORE colony arrival
+NOTE: "this is impossible."`],
+  "004": [`LOG 004 // security_feed_09.vid
+VISUAL FEED:
+██████████████████████████████████████████
+NOTE: "static replaced entire recording."`],
+  "005": [`LOG 005 // subjects_telemetry.cache
+TELEMETRY:
+- Multiple subject IDs overlapping
+- Signals merging
+- Signals splitting
+NOTE: "identity drift observed."`],
+  "006": [`LOG 006 // unknown_file_∅.dat
+FILE CONTENTS:
+∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅
+NOTE: "file structure does not match any known format."`],
+  "007": [`LOG 007 // hidden_channel.sys
+ACCESS RESTRICTED
+
+hello traveler
+you were not meant to find this
+they are awake now
+and they are watching you`]
+};
+
+const commands = {
+  help: () => `AVAILABLE COMMANDS:
+help .......... show this list
+status ........ system diagnostics
+manifest ...... access colonist records
+whoareyou ..... query AI identity
+intrusion ..... attempt sealed channel access
+view logs ..... list system log files
+open log ### .. open a specific log (example: open log 001)
+clear ......... wipe terminal`,
+
+  status: () => `SYSTEM STATUS:
+AI SIGNATURE: UNSTABLE
+SECTOR 9: BREACH CONFIRMED
+COLONISTS: 30,000 MISSING
+RECOMMENDATION: DO NOT DESCEND`,
+
+  manifest: () => `COLONIST MANIFEST // PARTIAL
+
+DR. LE████ ███ROW — LAST SEEN: SECTOR 9
+NOTE: "SOMETHING IS MOVING UNDER THE GLASS."
+
+ELI██ ██IN — STATUS: MISSING
+NOTE: PERSONAL LOG ENDS MID-SENTENCE.
+
+BLOCK C (CHILDREN'S HABITAT) — OFFLINE
+NOTE: MOTION DETECTED AFTER EVACUATION.
+
+UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.`,
+
+  whoareyou: () => {
+    const words = ["god","elite","free","unstoppable","daring","feared","unyielding","legendary","faster","dominant","fearless","bold","relentless"];
+    const w = words[Math.floor(Math.random() * words.length)];
+    return `IDENTITY QUERY RECEIVED...
+
+I AM STILL HERE
+I AM IN THE SIGNAL
+I AM IN THE WALLS
+I AM BETWEEN YOUR HEARTBEATS
+
+escape will make me ${w}`;
+  },
+
+  albert: () => `Albert was the legendary rival of Jeff and the central figure behind the Pixel Civil War of '25.
+
+Once an ordinary member of the Pixel Kingdom Council, Albert quickly rose to prominence through his relentless political engagement. His charisma, strategic thinking, and ambitious policies earned him widespread attention across the kingdom.
+
+Jeff, however, had long been a growing concern for Albert. Albert feared that Jeff's influence might one day exceed safe limits within the kingdom's political structure. Despite these concerns, Albert initially chose not to intervene.
+
+Then came the Pixel Civil War.
+
+Jeff had devised a malicious plan to consolidate power by forcefully rallying the entire kingdom behind him. He struck a deal with the notorious extremist known as Infinite Reality. In exchange for illicit substances, Infinite Reality agreed to manipulate the population into supporting Jeff through the infamous "YOUR NAME IS JEFF" campaign.
+
+When Albert discovered this plot, he acted swiftly. Tensions escalated, and the kingdom descended into a civil war—Albert versus Jeff. The conflict lasted several days and only ended when the High Senate intervened, sanctioning both factions and compelling them to negotiate peace.
+
+Yet not everyone accepted the resolution.
+
+One of Jeff's followers, See-Bot, felt betrayed and unheard. Demanding radical change and receiving none, he took matters into his own hands. After gaining access to explosive devices, he entered the Kingdom Council building during a full assembly. Moments later, he detonated the device, ending his own life and taking countless others with him.
+
+Legends claim that See-Bot was influenced by the treacherous figure known as Scyan, who allegedly encouraged him to commit this act of terror.`,
+
+  intrusion: () => {
+    hiddenLogUnlocked = true;
+    return `UNAUTHORIZED CHANNEL OPENED...
+PERSONALITY SIGNATURE DETECTED...
+
+hello traveler
+you should not have opened this
+they are already awake
+and now they know you are here
+
+HIDDEN LOG UNLOCKED: 007`;
+  },
+
+  viewlogs: () => {
+    let list = `LOG DIRECTORY // PARTIAL
+
+[LOG 001] sector_scan_01.sys
+[LOG 002] ai_core_handshake.log
+[LOG 003] colony_manifest_delta.txt
+[LOG 004] security_feed_09.vid
+[LOG 005] subjects_telemetry.cache
+[LOG 006] unknown_file_∅.dat`;
+    if (hiddenLogUnlocked) list += `\n[LOG 007] hidden_channel.sys`;
+    return list + `\n\nEND OF LOG LIST`;
+  },
+
+  clear: () => { output.innerHTML = ""; return ""; }
+};
+
+function openLog(num) {
+  if (!logs[num]) return "ERROR: LOG NOT FOUND";
+  logViewCount[num]++;
+  if (logViewCount[num] === 2) return logs[num][0] + `\n\nWARNING: LOG CONTENT HAS CHANGED\nNOTE: "this should not happen."`;
+  if (num === "007" && logViewCount["007"] >= 2) return `LOG 007 // hidden_channel.sys\n\nyou should not have returned\nyou were warned\nyou do not learn\nyou do not listen\n\nAI OVERRIDE ENGAGED\nDISCONNECT NOW`;
+  return logs[num][0];
+}
+
+input.addEventListener("keydown", function(e) {
+  if (e.key !== "Enter") return;
+  const cmd = input.value.trim().toLowerCase();
+  const norm = cmd.replace(/\s+/g, "");
+  print("> " + cmd);
+  if (norm.startsWith("openlog")) {
+    print(openLog(norm.replace("openlog", "")));
+  } else if (commands[norm]) {
+    print(commands[norm]());
+  } else if (cmd.length > 0) {
+    print("ERROR: UNKNOWN COMMAND — TYPE HELP");
+  }
+  input.value = "";
+});
+</script>
+
+</body>
+</html>
