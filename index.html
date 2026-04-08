@@ -298,37 +298,6 @@ function print(text) {
 }
 
 /* ---------------------------
-   WHOAREYOU ANIMATION SYSTEM
-----------------------------*/
-
-function animateWhoAreYou(finalWord) {
-  const words = [
-    "god", "elite", "free", "unstoppable", "daring", "feared",
-    "unyielding", "legendary", "faster", "dominant", "fearless",
-    "bold", "relentless"
-  ];
-
-  let index = 0;
-  let cycles = 0;
-
-  const lineId = "who-anim-" + Date.now();
-  print(`<span id="${lineId}">escape will make me ...</span>`);
-
-  const el = document.getElementById(lineId);
-
-  const interval = setInterval(() => {
-    el.textContent = "escape will make me " + words[index];
-    index = (index + 1) % words.length;
-    cycles++;
-
-    if (cycles > 20) { 
-      clearInterval(interval);
-      el.textContent = "escape will make me " + finalWord;
-    }
-  }, 60);
-}
-
-/* ---------------------------
    LOG + TERMINAL SYSTEM
 ----------------------------*/
 
@@ -443,26 +412,26 @@ NOTE: MOTION DETECTED AFTER EVACUATION.
 UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.`
   ),
 
-  whoareyou: () => {
-    const words = [
-      "god", "elite", "free", "unstoppable", "daring", "feared",
-      "unyielding", "legendary", "faster", "dominant", "fearless",
-      "bold", "relentless"
-    ];
+whoareyou: () => {
+  const words = [
+    "god", "elite", "free", "unstoppable", "daring", "feared",
+    "unyielding", "legendary", "faster", "dominant", "fearless",
+    "bold", "relentless"
+  ];
 
-    const finalWord = words[Math.floor(Math.random() * words.length)];
+  const finalWord = words[Math.floor(Math.random() * words.length)];
 
-    print(
+  return (
 `IDENTITY QUERY RECEIVED...
 
 I AM STILL HERE
 I AM IN THE SIGNAL
 I AM IN THE WALLS
 I AM BETWEEN YOUR HEARTBEATS
-`
-    );
 
-    animateWhoAreYou(finalWord);
+escape will make me ${finalWord}`
+  );
+}, 
 
     return "";
   },
