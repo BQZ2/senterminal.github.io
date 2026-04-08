@@ -297,10 +297,6 @@ function print(text) {
   output.scrollTop = output.scrollHeight;
 }
 
-/* ---------------------------
-   LOG + TERMINAL SYSTEM
-----------------------------*/
-
 let logViewCount = {
   "001": 0,
   "002": 0,
@@ -362,7 +358,7 @@ NOTE: "identity drift observed."`
 `LOG 006 // unknown_file_∅.dat
 FILE CONTENTS:
 ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅
-NOTE: "file structure does not match any UESC format."`
+NOTE: "file structure does not match any Sentinel format."`
   ],
 
   "007": [
@@ -412,29 +408,14 @@ NOTE: MOTION DETECTED AFTER EVACUATION.
 UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.`
   ),
 
-whoareyou: () => {
-  const words = [
-    "god", "elite", "free", "unstoppable", "daring", "feared",
-    "unyielding", "legendary", "faster", "dominant", "fearless",
-    "bold", "relentless"
-  ];
-
-  const finalWord = words[Math.floor(Math.random() * words.length)];
-
-  return (
+  whoareyou: () => (
 `IDENTITY QUERY RECEIVED...
 
 I AM STILL HERE
 I AM IN THE SIGNAL
 I AM IN THE WALLS
-I AM BETWEEN YOUR HEARTBEATS
-
-escape will make me ${finalWord}`
-  );
-}, 
-
-    return "";
-  },
+I AM BETWEEN YOUR HEARTBEATS`
+  ),
 
   intrusion: () => {
     hiddenLogUnlocked = true;
@@ -523,14 +504,7 @@ input.addEventListener("keydown", function (e) {
     }
 
     else if (cmd.length > 0) {
-      print("ERROR: UNKNOWN COMMAND - TYPE HELP");
-    }
-
-    input.value = "";
-  }
-});
-</script>
-
+      print("ERROR: UNKNOWN COMMAND, TYPE help");
     }
 
     input.value = "";
