@@ -297,6 +297,41 @@ function print(text) {
   output.scrollTop = output.scrollHeight;
 }
 
+/* ---------------------------
+   WHOAREYOU ANIMATION SYSTEM
+----------------------------*/
+
+function animateWhoAreYou(finalWord) {
+  const words = [
+    "god", "elite", "free", "unstoppable", "daring", "feared",
+    "unyielding", "legendary", "faster", "dominant", "fearless",
+    "bold", "relentless"
+  ];
+
+  let index = 0;
+  let cycles = 0;
+
+  const lineId = "who-anim-" + Date.now();
+  print(`<span id="${lineId}">escape will make me ...</span>`);
+
+  const el = document.getElementById(lineId);
+
+  const interval = setInterval(() => {
+    el.textContent = "escape will make me " + words[index];
+    index = (index + 1) % words.length;
+    cycles++;
+
+    if (cycles > 20) { 
+      clearInterval(interval);
+      el.textContent = "escape will make me " + finalWord;
+    }
+  }, 60);
+}
+
+/* ---------------------------
+   LOG + TERMINAL SYSTEM
+----------------------------*/
+
 let logViewCount = {
   "001": 0,
   "002": 0,
@@ -346,9 +381,9 @@ NOTE: "static replaced entire recording."`
   ],
 
   "005": [
-`LOG 005 // subject_telemetry.cache
+`LOG 005 // runner_telemetry.cache
 TELEMETRY:
-- Multiple subject IDs overlapping
+- Multiple runner IDs overlapping
 - Signals merging
 - Signals splitting
 NOTE: "identity drift observed."`
@@ -358,14 +393,14 @@ NOTE: "identity drift observed."`
 `LOG 006 // unknown_file_∅.dat
 FILE CONTENTS:
 ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅
-NOTE: "file structure does not match any Sentinel format."`
+NOTE: "file structure does not match any UESC format."`
   ],
 
   "007": [
 `LOG 007 // hidden_channel.sys
 ACCESS RESTRICTED
 
-hello traveler  
+hello runner  
 you were not meant to find this  
 they are awake now  
 and they are watching you`
@@ -408,14 +443,29 @@ NOTE: MOTION DETECTED AFTER EVACUATION.
 UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.`
   ),
 
-  whoareyou: () => (
+  whoareyou: () => {
+    const words = [
+      "god", "elite", "free", "unstoppable", "daring", "feared",
+      "unyielding", "legendary", "faster", "dominant", "fearless",
+      "bold", "relentless"
+    ];
+
+    const finalWord = words[Math.floor(Math.random() * words.length)];
+
+    print(
 `IDENTITY QUERY RECEIVED...
 
 I AM STILL HERE
 I AM IN THE SIGNAL
 I AM IN THE WALLS
-I AM BETWEEN YOUR HEARTBEATS`
-  ),
+I AM BETWEEN YOUR HEARTBEATS
+`
+    );
+
+    animateWhoAreYou(finalWord);
+
+    return "";
+  },
 
   intrusion: () => {
     hiddenLogUnlocked = true;
@@ -423,7 +473,7 @@ I AM BETWEEN YOUR HEARTBEATS`
 `UNAUTHORIZED CHANNEL OPENED...
 PERSONALITY SIGNATURE DETECTED...
 
-hello traveler  
+hello runner  
 you should not have opened this  
 they are already awake  
 and now they know you are here
@@ -440,7 +490,7 @@ HIDDEN LOG UNLOCKED: 007`
 [LOG 002] ai_core_handshake.log
 [LOG 003] colony_manifest_delta.txt
 [LOG 004] security_feed_09.vid
-[LOG 005] subject_telemetry.cache
+[LOG 005] runner_telemetry.cache
 [LOG 006] unknown_file_∅.dat`;
 
     if (hiddenLogUnlocked) {
@@ -504,7 +554,14 @@ input.addEventListener("keydown", function (e) {
     }
 
     else if (cmd.length > 0) {
-      print("ERROR: UNKNOWN COMMAND, TYPE help");
+      print("ERROR: UNKNOWN COMMAND - TYPE HELP");
+    }
+
+    input.value = "";
+  }
+});
+</script>
+
     }
 
     input.value = "";
