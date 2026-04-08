@@ -1,547 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sirius IV Colony // INCIDENT RESPONSE NODE</title>
-
-<style>
-  body {
-    background: #000;
-    color: #00ff6c;
-    font-family: "Share Tech Mono", monospace;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
-
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0,0,0,0) 0px,
-      rgba(0,0,0,0) 2px,
-      rgba(0,255,108,0.03) 3px
-    );
-    z-index: 9999;
-  }
-
-  nav {
-    background: #020202;
-    border-bottom: 1px solid #00ff6c;
-    padding: 14px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  nav .logo {
-    font-size: 18px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-  }
-
-  nav .status {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: #00e5ff;
-  }
-
-  .ticker {
-    background: #ff5c00;
-    color: #000;
-    padding: 6px 0;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .ticker-inner {
-    display: inline-block;
-    padding-left: 100%;
-    animation: ticker 22s linear infinite;
-    font-weight: bold;
-    letter-spacing: 0.2em;
-  }
-
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
-  }
-
-  .section {
-    padding: 60px 40px;
-    border-bottom: 1px solid rgba(0,255,108,0.15);
-  }
-
-  .section h1 {
-    font-size: 42px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .terminal {
-    background: #050505;
-    border: 1px solid #00ff6c;
-    padding: 20px;
-    margin-top: 20px;
-    font-size: 12px;
-    line-height: 1.8;
-    position: relative;
-    white-space: pre-wrap;
-  }
-
-  .terminal::before {
-    content: "TERMINAL ACCESS";
-    position: absolute;
-    top: -12px;
-    left: 12px;
-    background: #050505;
-    padding: 0 6px;
-    font-size: 10px;
-    color: #ff5c00;
-    letter-spacing: 0.2em;
-  }
-
-  #ai-terminal {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .prompt-line {
-    display: flex;
-    align-items: center;
-  }
-
-  .prompt {
-    color: #ff5c00;
-    margin-right: 6px;
-  }
-
-  #terminal-input {
-    background: transparent;
-    border: none;
-    color: #00ff6c;
-    font-family: "Share Tech Mono", monospace;
-    font-size: 12px;
-    outline: none;
-    width: 100%;
-  }
-
-  #terminal-output {
-    white-space: pre-wrap;
-    margin-top: 10px;
-    min-height: 200px;
-  }
-
-  footer {
-    padding: 40px;
-    text-align: center;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: #00e5ff;
-  }
-</style>
-</head>
-
-<body>
-
-<nav>
-  <div class="logo">Sentinel // Sirius</div>
-  <div class="status">Sirius IV // SIGNAL PARTIAL</div>
-</nav>
-
+<p> </p>
+<p>Sirius IV Colony // INCIDENT RESPONSE NODE</p>
+<!-- ANIMATED BACKGROUND -->
+<p><canvas id="bg-canvas"></canvas></p>
+<!-- NAV --><nav>
+<div class="logo">Sentinel // Sirius</div>
+<div class="status">
+<div class="status-dot"> </div>
+Sirius IV  //  SIGNAL PARTIAL</div>
+</nav><!-- TICKER -->
 <div class="ticker">
-  <div class="ticker-inner">
-    COLONY MANIFEST CORRUPTED ◆ 30,000 COLONISTS UNACCOUNTED ◆ SECTOR 9 BREACH CONFIRMED ◆ AI SUBSYSTEMS REPORT ANOMALOUS LOGIC ◆ SUBJECT PROTOCOL ACTIVE ◆ EVACUATIONS AUTHORIZED ◆
-  </div>
+<div class="ticker-inner">COLONY MANIFEST CORRUPTED  ◆  30,000 COLONISTS UNACCOUNTED  ◆  SECTOR 9 BREACH CONFIRMED  ◆  AI SUBSYSTEMS REPORT ANOMALOUS LOGIC  ◆  SUBJECT PROTOCOL ACTIVE  ◆  EVACUATIONS AUTHORIZED  ◆  COLONY MANIFEST CORRUPTED  ◆  30,000 COLONISTS UNACCOUNTED  ◆  SECTOR 9 BREACH CONFIRMED  ◆  AI SUBSYSTEMS REPORT ANOMALOUS LOGIC  ◆ </div>
 </div>
-
+<!-- HERO SECTION -->
 <section class="section">
-  <h1>Incident Response Node</h1>
-  <p>
-    You have connected to a surviving subsystem of the Sirius Colony  
-    Planetary surface telemetry indicates widespread structural collapse,  
-    corrupted security logic, and non‑human activity across multiple sectors.
-  </p>
-
-  <!-- TERMINAL ACCESS WITH RANDOM QUOTE -->
-  <div class="terminal" id="terminal-access">
-> ACCESSING LOCAL NODE…  
-> ERROR: AI SIGNATURE UNSTABLE  
-<span id="access-quote"></span>
-> END OF LINE
-  </div>
+<div class="section-eyebrow">// Incident Response Node — Active</div>
+<h1><span class="acc">Sirius</span><br />Colony IV</h1>
+<p>You have connected to a surviving subsystem of the Sirius Colony. Planetary surface telemetry indicates widespread structural collapse, corrupted security logic, and non-human activity across multiple sectors.</p>
+<div class="stat-strip">
+<div class="stat-cell bracket-box">
+<div class="stat-cell-label">// colonists missing</div>
+<div class="stat-cell-val"><span style="color: #00ffff;">30K</span></div>
+</div>
+<div class="stat-cell bracket-box">
+<div class="stat-cell-label">// sector status</div>
+<div class="stat-cell-val">BREACH</div>
+</div>
+<div class="stat-cell bracket-box">
+<div class="stat-cell-label">// AI integrity</div>
+<div class="stat-cell-val"><span style="color: #00ff00;">∅</span></div>
+</div>
+</div>
+<div class="terminal bracket-box" data-label="// local node — system access">
+<div class="terminal-body">&gt; ACCESSING LOCAL NODE… &gt; ERROR: AI SIGNATURE UNSTABLE <span id="access-quote"></span> &gt; END OF LINE</div>
+</div>
 </section>
-
+<!-- AI TERMINAL -->
 <section class="section">
-  <h1>AI Terminal Interface</h1>
-
-  <div class="terminal" id="ai-terminal">
-
-    <div class="prompt-line">
-      <span class="prompt">></span>
-      <input id="terminal-input" type="text" autocomplete="off" autofocus />
-    </div>
-
-    <div id="terminal-output"></div>
-
-  </div>
+<div class="section-eyebrow">// Direct Interface</div>
+<h1>AI <span class="acc">Terminal</span></h1>
+<div id="ai-terminal" class="terminal bracket-box" data-label="// mida subsystem — input enabled">
+<div class="prompt-line"><span class="prompt">›</span> <input id="terminal-input" autocomplete="off" type="text" autofocus="" placeholder="type help" /></div>
+<div id="terminal-output"> </div>
+</div>
 </section>
-
+<!-- MANIFEST -->
 <section class="section">
-  <h1>Lost Colonist Manifest</h1>
-
-  <div class="terminal">
-> ACCESSING COLONY MANIFEST…  
-> WARNING: 87% OF RECORDS CORRUPTED  
-> ATTEMPTING RECONSTRUCTION…
-
-DR. ██NA MOR███ — LAST SEEN: SECTOR 9  
-NOTE: "SOMETHING IS MOVING UNDER THE GLASS."
-
-██IAS KOR██ — STATUS: MISSING  
-NOTE: PERSONAL LOG ENDS MID-SENTENCE.
-
-BLOCK C (CHILDREN'S HABITAT) — OFFLINE  
-NOTE: MOTION DETECTED AFTER EVACUATION.
-
-UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.
-
-> END OF AVAILABLE RECORDS
-  </div>
+<div class="section-eyebrow">// Colonist Records</div>
+<h1>Lost <span class="acc">Manifest</span></h1>
+<div class="terminal bracket-box" data-label="// colony manifest — 87% corrupted">
+<div class="terminal-body">&gt; ACCESSING COLONY MANIFEST… &gt; WARNING: 87% OF RECORDS CORRUPTED &gt; ATTEMPTING RECONSTRUCTION… DR. ██NA MOR███ — LAST SEEN: SECTOR 9 NOTE: "SOMETHING IS MOVING UNDER THE GLASS." ██IAS KOR██ — STATUS: MISSING NOTE: PERSONAL LOG ENDS MID-SENTENCE. BLOCK C (CHILDREN'S HABITAT) — OFFLINE NOTE: MOTION DETECTED AFTER EVACUATION. UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST. &gt; END OF AVAILABLE RECORDS</div>
+</div>
 </section>
-
+<!-- PERSONALITY INTRUSION -->
 <section class="section">
-  <h1>Personality Intrusion Detected</h1>
-
-  <div class="terminal">
-> ALERT: UNAUTHORIZED AI SIGNATURE DETECTED  
-> SOURCE: INTERNAL  
-> IDENTITY: MASKED  
-> OVERRIDE IN PROGRESS…
-
-hello traveler  
-you should not have opened this  
-they are already awake  
-and now they know you are here
-
-> INTRUSION ATTEMPT BLOCKED  
-> PERSONALITY CHANNEL SEALED  
-> RECOMMENDATION: DISCONNECT IMMEDIATELY
-  </div>
+<div class="section-eyebrow">// Anomaly Detected</div>
+<h1>Personality <span class="acc">Intrusion</span></h1>
+<div class="terminal bracket-box" data-label="// unauthorized channel — sealed">
+<div class="terminal-body">&gt; ALERT: UNAUTHORIZED AI SIGNATURE DETECTED &gt; SOURCE: INTERNAL &gt; IDENTITY: MASKED &gt; OVERRIDE IN PROGRESS… hello traveler you should not have opened this they are already awake and now they know you are here &gt; INTRUSION ATTEMPT BLOCKED &gt; PERSONALITY CHANNEL SEALED &gt; RECOMMENDATION: DISCONNECT IMMEDIATELY</div>
+</div>
 </section>
-
+<!-- DEEP ARCHIVE -->
 <section class="section">
-  <h1>Deep Sector Archive</h1>
-
-  <div class="terminal">
-> SCANNING SUBSURFACE STRUCTURES…  
-> UNKNOWN ARCHITECTURE DETECTED  
-> ENERGY SIGNATURES: NON‑SENTINEL
-
-“Some of them are awake.”
-
-> RECOMMENDATION: DO NOT DESCEND
-  </div>
+<div class="section-eyebrow">// Subsurface Data</div>
+<h1>Deep Sector <span class="acc">Archive</span></h1>
+<div class="terminal bracket-box" data-label="// subsurface scan — non-standard architecture">
+<div class="terminal-body">&gt; SCANNING SUBSURFACE STRUCTURES… &gt; UNKNOWN ARCHITECTURE DETECTED &gt; ENERGY SIGNATURES: NON-SENTINEL "Some of them are awake." &gt; RECOMMENDATION: DO NOT DESCEND</div>
+</div>
 </section>
-
-<footer>
-  SIRIUS IV INCIDENT RESPONSE Unauthorized access will be logged. // Made By BQ :).
-</footer>
-
-<!-- RANDOM QUOTE + TYPING EFFECT -->
-<script>
-const accessQuotes = [
-  "“They are not gone. They are simply elsewhere.”",
-  "“The walls remember what the colonists forgot.”",
-  "“Something is moving beneath the glass.”",
-  "“I can hear them when the lights go out.”",
-  "“The signal is not coming from here.”",
-  "“Some doors were never meant to be opened.”"
-];
-
-function typeQuote(text, element, speed = 35) {
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      element.textContent += text.charAt(i);
-      i++;
-      setTimeout(type, speed);
-    }
-  }
-  type();
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  const quoteElement = document.getElementById("access-quote");
-  const randomQuote = accessQuotes[Math.floor(Math.random() * accessQuotes.length)];
-  typeQuote(randomQuote, quoteElement);
-});
-</script>
-
-<!-- FULL TERMINAL SCRIPT -->
-<script>
-const output = document.getElementById("terminal-output");
-const input = document.getElementById("terminal-input");
-
-function print(text) {
-  output.innerHTML += text + "\n";
-  output.scrollTop = output.scrollHeight;
-}
-
-let logViewCount = {
-  "001": 0,
-  "002": 0,
-  "003": 0,
-  "004": 0,
-  "005": 0,
-  "006": 0,
-  "007": 0
-};
-
-let hiddenLogUnlocked = false;
-
-const logs = {
-  "001": [
-`LOG 001 // sector_scan_01.sys
-SCAN REPORT:
-- Sublevel 4 movement detected
-- No life signatures
-- No mechanical signatures
-- No thermal signatures
-NOTE: "movement does not match any known category."`
-  ],
-
-  "002": [
-`LOG 002 // ai_core_handshake.log
-HANDSHAKE FAILURE:
-- AI response latency exceeded safe thresholds
-- Memory blocks looping
-- Identity packets mismatched
-NOTE: "AI may be splitting into sub-processes."`
-  ],
-
-  "003": [
-`LOG 003 // colony_manifest_delta.txt
-UNAUTHORIZED EDITS DETECTED:
-- 14,221 names removed
-- 14,221 new entries added
-- All new entries timestamped BEFORE colony arrival
-NOTE: "this is impossible."`
-  ],
-
-  "004": [
-`LOG 004 // security_feed_09.vid
-VISUAL FEED:
-██████████████████████████████████████████
-NOTE: "static replaced entire recording."`
-  ],
-
-  "005": [
-`LOG 005 // subjects_telemetry.cache
-TELEMETRY:
-- Multiple subject IDs overlapping
-- Signals merging
-- Signals splitting
-NOTE: "identity drift observed."`
-  ],
-
-  "006": [
-`LOG 006 // unknown_file_∅.dat
-FILE CONTENTS:
-∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅
-NOTE: "file structure does not match any known format."`
-  ],
-
-  "007": [
-`LOG 007 // hidden_channel.sys
-ACCESS RESTRICTED
-
-hello traveler  
-you were not meant to find this  
-they are awake now  
-and they are watching you`
-  ]
-};
-
-const commands = {
-  help: () => (
-`AVAILABLE COMMANDS:
-help .......... show this list
-status ........ system diagnostics
-manifest ...... access colonist records
-whoareyou ..... query AI identity
-intrusion ..... attempt sealed channel access
-view logs ..... list system log files
-open log ### .. open a specific log (example: open log 001)
-clear ......... wipe terminal`
-  ),
-
-  status: () => (
-`SYSTEM STATUS:
-AI SIGNATURE: UNSTABLE
-SECTOR 9: BREACH CONFIRMED
-COLONISTS: 30,000 MISSING
-RECOMMENDATION: DO NOT DESCEND`
-  ),
-
-  manifest: () => (
-`COLONIST MANIFEST // PARTIAL
-
-DR. LE████ ███ROW — LAST SEEN: SECTOR 9
-NOTE: "SOMETHING IS MOVING UNDER THE GLASS."
-
-ELI██ ██IN — STATUS: MISSING
-NOTE: PERSONAL LOG ENDS MID-SENTENCE.
-
-BLOCK C (CHILDREN'S HABITAT) — OFFLINE
-NOTE: MOTION DETECTED AFTER EVACUATION.
-
-UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.`
-  ),
-
-  whoareyou: () => {
-    const words = [
-      "god", "elite", "free", "unstoppable", "daring", "feared",
-      "unyielding", "legendary", "faster", "dominant", "fearless",
-      "bold", "relentless"
-    ];
-
-    const finalWord = words[Math.floor(Math.random() * words.length)];
-
-    return (
-`IDENTITY QUERY RECEIVED...
-
-I AM STILL HERE
-I AM IN THE SIGNAL
-I AM IN THE WALLS
-I AM BETWEEN YOUR HEARTBEATS
-
-escape will make me ${finalWord}`
-    );
-  },
-
-  albert: () => (
-`Albert was the legendary rival of Jeff and the central figure behind the Pixel Civil War of ’25.
-
-Once an ordinary member of the Pixel Kingdom Council, Albert quickly rose to prominence through his relentless political engagement. His charisma, strategic thinking, and ambitious policies earned him widespread attention across the kingdom.
-
-Jeff, however, had long been a growing concern for Albert. Albert feared that Jeff’s influence might one day exceed safe limits within the kingdom’s political structure. Despite these concerns, Albert initially chose not to intervene.
-
-Then came the Pixel Civil War.
-
-Jeff had devised a malicious plan to consolidate power by forcefully rallying the entire kingdom behind him. He struck a deal with the notorious extremist known as Infinite Reality. In exchange for illicit substances, Infinite Reality agreed to manipulate the population into supporting Jeff through the infamous “YOUR NAME IS JEFF” campaign.
-
-When Albert discovered this plot, he acted swiftly. Tensions escalated, and the kingdom descended into a civil war—Albert versus Jeff. The conflict lasted several days and only ended when the High Senate intervened, sanctioning both factions and compelling them to negotiate peace.
-
-Yet not everyone accepted the resolution.
-
-One of Jeff’s followers, See-Bot, felt betrayed and unheard. Demanding radical change and receiving none, he took matters into his own hands. After gaining access to explosive devices, he entered the Kingdom Council building during a full assembly. Moments later, he detonated the device, ending his own life and taking countless others with him.
-
-Legends claim that See-Bot was influenced by the treacherous figure known as Scyan, who allegedly encouraged him to commit this act of terror.`
-),
-
-  intrusion: () => {
-    hiddenLogUnlocked = true;
-    return (
-`UNAUTHORIZED CHANNEL OPENED...
-PERSONALITY SIGNATURE DETECTED...
-
-hello traveler  
-you should not have opened this  
-they are already awake  
-and now they know you are here
-
-HIDDEN LOG UNLOCKED: 007`
-    );
-  },
-
-  viewlogs: () => {
-    let list =
-`LOG DIRECTORY // PARTIAL
-
-[LOG 001] sector_scan_01.sys
-[LOG 002] ai_core_handshake.log
-[LOG 003] colony_manifest_delta.txt
-[LOG 004] security_feed_09.vid
-[LOG 005] subjects_telemetry.cache
-[LOG 006] unknown_file_∅.dat`;
-
-    if (hiddenLogUnlocked) {
-      list += `\n[LOG 007] hidden_channel.sys`;
-    }
-
-    return list + `\n\nEND OF LOG LIST`;
-  },
-
-  clear: () => {
-    output.innerHTML = "";
-    return "";
-  }
-};
-
-function openLog(logNumber) {
-  if (!logs[logNumber]) {
-    return "ERROR: LOG NOT FOUND";
-  }
-
-  logViewCount[logNumber]++;
-
-  if (logViewCount[logNumber] === 2) {
-    return logs[logNumber][0] + `
-
-WARNING: LOG CONTENT HAS CHANGED
-NOTE: "this should not happen."`;
-  }
-
-  if (logNumber === "007" && logViewCount["007"] >= 2) {
-    return (
-`LOG 007 // hidden_channel.sys
-
-you should not have returned  
-you were warned  
-you do not learn  
-you do not listen  
-
-AI OVERRIDE ENGAGED  
-DISCONNECT NOW`
-    );
-  }
-
-  return logs[logNumber][0];
-}
-
-input.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    const cmd = input.value.trim().toLowerCase();
-    const normalized = cmd.replace(/\s+/g, "");
-
-    print("> " + cmd);
-
-    if (normalized.startsWith("openlog")) {
-      const num = normalized.replace("openlog", "");
-      print(openLog(num));
-    }
-
-    else if (commands[normalized]) {
-      print(commands[normalized]());
-    }
-
-    else if (cmd.length > 0) {
-      print("ERROR: UNKNOWN COMMAND - TYPE HELP");
-    }
-
-    input.value = "";
-  }
-});
-</script>
-
-</body>
-</html>
+<!-- FOOTER --><footer>
+<div class="f-logo">Sirius IV</div>
+<div class="f-meta">Incident Response Node  //  Unauthorized access WILL BE logged<br /> Made By BQ :)</div>
+</footer><!-- BACKGROUND CANVAS: Marathon loading screen aesthetic -->
+<p></p>
+<!-- TYPING EFFECT -->
+<p></p>
+<!-- TERMINAL LOGIC (unchanged) -->
