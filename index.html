@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colony // INCIDENT RESPONSE NODE</title>
+<title>Sirius IV Colony // INCIDENT RESPONSE NODE</title>
 
 <style>
   body {
@@ -153,20 +153,20 @@
 <body>
 
 <nav>
-  <div class="logo">Colony // SENTINEL</div>
+  <div class="logo">UESC // MARATHON</div>
   <div class="status">Sirius IV // SIGNAL PARTIAL</div>
 </nav>
 
 <div class="ticker">
   <div class="ticker-inner">
-    COLONY MANIFEST CORRUPTED ◆ 30,000 CIVILIANS UNACCOUNTED ◆ SECTOR 9 BREACH CONFIRMED ◆ AI SUBSYSTEMS REPORT ANOMALOUS LOGIC ◆ EMERGENCY PROTOCOL ACTIVE ◆ EVACUATION AUTHORIZED ◆
+    COLONY MANIFEST CORRUPTED ◆ 30,000 COLONISTS UNACCOUNTED ◆ SECTOR 9 BREACH CONFIRMED ◆ AI SUBSYSTEMS REPORT ANOMALOUS LOGIC ◆ SUBJECT PROTOCOL ACTIVE ◆ EVACUATIONS AUTHORIZED ◆
   </div>
 </div>
 
 <section class="section">
   <h1>Incident Response Node</h1>
   <p>
-    You have connected to a surviving subsystem of the Sirius Colony.  
+    You have connected to a surviving subsystem of the Sirius Colony  
     Planetary surface telemetry indicates widespread structural collapse,  
     corrupted security logic, and non‑human activity across multiple sectors.
   </p>
@@ -244,7 +244,7 @@ and now they know you are here
   <div class="terminal">
 > SCANNING SUBSURFACE STRUCTURES…  
 > UNKNOWN ARCHITECTURE DETECTED  
-> ENERGY SIGNATURES: NON‑SENTINEL
+> ENERGY SIGNATURES: NON‑UESC
 
 “Some of them are awake.”
 
@@ -253,8 +253,8 @@ and now they know you are here
 </section>
 
 <footer>
-  Sirius IV INCIDENT RESPONSE  
-  Unauthorized access to terminals will be logged. // Made by BQ :).
+  UESC MARATHON // TAU CETI IV INCIDENT RESPONSE  
+  Unauthorized access will be logged.
 </footer>
 
 <!-- RANDOM QUOTE + TYPING EFFECT -->
@@ -346,7 +346,7 @@ NOTE: "static replaced entire recording."`
   ],
 
   "005": [
-`LOG 005 // subject_telemetry.cache
+`LOG 005 // subjects_telemetry.cache
 TELEMETRY:
 - Multiple subject IDs overlapping
 - Signals merging
@@ -358,14 +358,14 @@ NOTE: "identity drift observed."`
 `LOG 006 // unknown_file_∅.dat
 FILE CONTENTS:
 ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅ ∅
-NOTE: "file structure does not match any Sentinel format."`
+NOTE: "file structure does not match any UESC format."`
   ],
 
   "007": [
 `LOG 007 // hidden_channel.sys
 ACCESS RESTRICTED
 
-hello traveler  
+hello subject  
 you were not meant to find this  
 they are awake now  
 and they are watching you`
@@ -408,14 +408,26 @@ NOTE: MOTION DETECTED AFTER EVACUATION.
 UNKNOWN ENTRY — THIS RECORD SHOULD NOT EXIST.`
   ),
 
-  whoareyou: () => (
+  whoareyou: () => {
+    const words = [
+      "god", "elite", "free", "unstoppable", "daring", "feared",
+      "unyielding", "legendary", "faster", "dominant", "fearless",
+      "bold", "relentless"
+    ];
+
+    const finalWord = words[Math.floor(Math.random() * words.length)];
+
+    return (
 `IDENTITY QUERY RECEIVED...
 
 I AM STILL HERE
 I AM IN THE SIGNAL
 I AM IN THE WALLS
-I AM BETWEEN YOUR HEARTBEATS`
-  ),
+I AM BETWEEN YOUR HEARTBEATS
+
+escape will make me ${finalWord}`
+    );
+  },
 
   intrusion: () => {
     hiddenLogUnlocked = true;
@@ -423,7 +435,7 @@ I AM BETWEEN YOUR HEARTBEATS`
 `UNAUTHORIZED CHANNEL OPENED...
 PERSONALITY SIGNATURE DETECTED...
 
-hello traveler  
+hello subject  
 you should not have opened this  
 they are already awake  
 and now they know you are here
@@ -440,7 +452,7 @@ HIDDEN LOG UNLOCKED: 007`
 [LOG 002] ai_core_handshake.log
 [LOG 003] colony_manifest_delta.txt
 [LOG 004] security_feed_09.vid
-[LOG 005] subject_telemetry.cache
+[LOG 005] subjects_telemetry.cache
 [LOG 006] unknown_file_∅.dat`;
 
     if (hiddenLogUnlocked) {
@@ -504,7 +516,7 @@ input.addEventListener("keydown", function (e) {
     }
 
     else if (cmd.length > 0) {
-      print("ERROR: UNKNOWN COMMAND, TYPE help");
+      print("ERROR: UNKNOWN COMMAND");
     }
 
     input.value = "";
