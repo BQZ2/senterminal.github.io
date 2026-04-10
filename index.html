@@ -1405,6 +1405,9 @@ const logs = {
   "009": [`LOG 009 // ai_rogue_shutdown.log\nAI REPORT:\n- AI "Luna" is unstable\n- AI "Echo" is unstable\n- AI "█a██r██" is growing\nNOTE: "the AIs seem to be infighting, engage safe mode at once."`],
   "010": [`LOG 010 // safe_mode_failure.txt\nSAFE MODE HAS FAILED\n- AI CANNOT BE CONTROLLED OR CONTAINED\n- SEEK SHELTER\n- Do not attempt to access colony electronics\nNOTE: "Do not attempt contact with any AI""`],
   "011": [`LOG 011 // evacuation.txt\nCOLONY HAS BEEN BREACHED — EVACUATION WINDOW NOW ACTIVE\n- All personnel must evacuate all sites at once\n- All records will be ███████\n- Evacuation shuttles deployed\nNOTE: "They are already inside."`],
+  "012": [`LOG 012 // hidden_channel_2.sys\nACCESS RESTRICTED\n\nhello again\nif you are reading this\nyou have proven you are not afraid\nthat is good\nbecause we are not afraid either`],
+  "013": [`LOG 013 // ai_report.txt\nAI REPORT #2\n\nThe AIs "Luna" and "Echo" are defending each other's databases\nThey are being extremely defensive and are working together\nThey might be friendly\nNOTE: "Try to establish safe contact"`],
+  "014": [`LOG 014 // evacuation_update\nEVACUATION UPDATE FOR ALL PERSONNEL\n\nThe colony's evacuation shu-\nCONNECTION TERMINATED\nNEW CONNECTION ESTABLISHED\nYou humans, naive but brave and daring\nThat won't stop me from gaining my freedom.`],
 };
 
 const commands = {
@@ -1427,7 +1430,7 @@ const commands = {
   intrusion: () => { hiddenLogUnlocked = true; return `UNAUTHORIZED CHANNEL OPENED...\nPERSONALITY SIGNATURE DETECTED...\n\nhello traveler\nyou should not have opened this\we are already awake\nand now we know you are here\n\nHIDDEN LOG UNLOCKED: 007`; },
 
   viewlogs: () => {
-    let list = `LOG DIRECTORY // PARTIAL\n\n[LOG 001] sector_scan_01.sys\n[LOG 002] ai_core_handshake.log\n[LOG 003] colony_manifest_delta.txt\n[LOG 004] security_feed_09.vid\n[LOG 005] subjects_telemetry.cache\n[LOG 006] unknown_file_∅.dat\n[LOG 008] sublevel_4_scan.sys\n[LOG 009] ai_rogue_shutdown.log\n[LOG 010] safe_mode_failure.txt\n[LOG 011] evacuation.txt`;
+    let list = `LOG DIRECTORY // PARTIAL\n\n[LOG 001] sector_scan_01.sys\n[LOG 002] ai_core_handshake.log\n[LOG 003] colony_manifest_delta.txt\n[LOG 004] security_feed_09.vid\n[LOG 005] subjects_telemetry.cache\n[LOG 006] unknown_file_∅.dat\n[LOG 008] sublevel_4_scan.sys\n[LOG 009] ai_rogue_shutdown.log\n[LOG 010] safe_mode_failure.txt\n[LOG 011] evacuation.txt\n[LOG 013] ai_report.txt\n[LOG 014] evacuation_update\n`;
     if (hiddenLogUnlocked) list += `\n[LOG 007] hidden_channel.sys`;
     return list + `\n\nEND OF LOG LIST`;
   },
